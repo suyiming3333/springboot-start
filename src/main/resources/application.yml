@@ -27,7 +27,9 @@ spring:
         prefetch: 5
         max-concurrency: 20
         concurrency: 10
-
+  redis:
+    host: 127.0.0.1
+    password:
 
 server:
   port: 8090

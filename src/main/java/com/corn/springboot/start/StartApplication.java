@@ -9,6 +9,12 @@ public class StartApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(StartApplication.class, args);
+
+//        try {
+//            new NettyServer(12345).run();
+//        }catch(Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
 }
