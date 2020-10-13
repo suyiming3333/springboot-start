@@ -1,6 +1,6 @@
-package com.corn.springboot.start.user.mapper;
+package com.corn.springboot.start.mybatisplus.user.mapper;
 
-import com.corn.springboot.start.user.entity.User;
+import com.corn.springboot.start.mybatisplus.user.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

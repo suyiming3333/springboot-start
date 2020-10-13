@@ -1,4 +1,4 @@
-package com.corn.springboot.start.user.entity;
+package com.corn.springboot.start.mybatisplus.user.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;

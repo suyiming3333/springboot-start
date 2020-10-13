@@ -1,7 +1,7 @@
 package com.corn.springboot.start;
 
-import com.corn.springboot.start.user.entity.User;
-import com.corn.springboot.start.user.service.UserService;
+import com.corn.springboot.start.mybatisplus.user.entity.User;
+import com.corn.springboot.start.mybatisplus.user.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

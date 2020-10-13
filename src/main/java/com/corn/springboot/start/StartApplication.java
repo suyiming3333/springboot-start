@@ -3,7 +3,7 @@ package com.corn.springboot.start;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-@MapperScan("com.corn.springboot.start.*.mapper")
+@MapperScan("com.corn.springboot.start.mybatisplus.*.mapper")
 @SpringBootApplication
 public class StartApplication {
 

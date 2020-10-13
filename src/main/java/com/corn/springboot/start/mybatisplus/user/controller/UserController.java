@@ -1,4 +1,4 @@
-package com.corn.springboot.start.user.controller;
+package com.corn.springboot.start.mybatisplus.user.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;

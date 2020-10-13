@@ -1,8 +1,8 @@
-package com.corn.springboot.start.user.service.impl;
+package com.corn.springboot.start.mybatisplus.user.service.impl;
 
-import com.corn.springboot.start.user.entity.User;
-import com.corn.springboot.start.user.mapper.UserMapper;
-import com.corn.springboot.start.user.service.UserService;
+import com.corn.springboot.start.mybatisplus.user.entity.User;
+import com.corn.springboot.start.mybatisplus.user.mapper.UserMapper;
+import com.corn.springboot.start.mybatisplus.user.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

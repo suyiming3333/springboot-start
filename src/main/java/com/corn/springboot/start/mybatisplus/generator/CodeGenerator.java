@@ -1,4 +1,4 @@
-package com.corn.springboot.start.generator;
+package com.corn.springboot.start.mybatisplus.generator;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;

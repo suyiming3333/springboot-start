@@ -1,6 +1,6 @@
-package com.corn.springboot.start.user.service;
+package com.corn.springboot.start.mybatisplus.user.service;
 
-import com.corn.springboot.start.user.entity.User;
+import com.corn.springboot.start.mybatisplus.user.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
