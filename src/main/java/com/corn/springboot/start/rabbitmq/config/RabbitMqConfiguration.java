@@ -18,6 +18,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author suyiming3333@gmail.com
  * @version V1.0
@@ -45,15 +48,18 @@ public class RabbitMqConfiguration {
     private SimpleRabbitListenerContainerFactoryConfigurer factoryConfigurer;
 
 
-    @Bean
-    public CachingConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
-        connectionFactory.setAddresses("127.0.0.1");
-        connectionFactory.setPort(5672);
-        connectionFactory.setUsername("guest");
-        connectionFactory.setPassword("guest");
-        return connectionFactory;
-    }
+
+
+//    @Bean
+//    public CachingConnectionFactory connectionFactory() {
+//        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+//        connectionFactory.setHost("139.9.0.236");
+//        connectionFactory.setPort(5673);
+//        connectionFactory.setUsername("corn");
+//        connectionFactory.setPassword("corn#9527");
+//        connectionFactory.setVirtualHost("dev");
+//        return connectionFactory;
+//    }
 
     @Bean
     public TopicExchange myTopicExchange(){
@@ -67,7 +73,13 @@ public class RabbitMqConfiguration {
 
     @Bean
     public Queue myQueueA(){
-        return new Queue("myQueueA",true);
+
+        //声明重试队列,重试队列比较特殊，需要设置两个参数
+        Map<String,Object> arg = new HashMap<String,Object>();
+        //参数1：将消息发送到哪一个转发器
+        arg.put("x-dead-letter-exchange","my-topic-exchange");
+
+        return new Queue("myQueueA",true,false,false,arg);
     }
 
     @Bean

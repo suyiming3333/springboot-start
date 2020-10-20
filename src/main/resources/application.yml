@@ -17,16 +17,25 @@ spring:
       connection-test-query: select 1
 
   rabbitmq:
-    addresses: 127.0.0.1
-    port: 5672
-    username: guest
-    password: guest
-    virtual-host: /
     listener:
       simple:
         prefetch: 5
         max-concurrency: 20
         concurrency: 10
+        ##不重新入队列(入队列的配置也要设置为false)
+        default-requeue-rejected: false
+        retry:
+          ##开启消费者自动重试
+          enabled: true
+          max-attempts: 5
+        ##自动签收,会尝试n次后，如果还丢失就会抛弃
+        acknowledge-mode: manual
+    host: 139.9.0.236
+    port: 5673
+    virtual-host: dev
+    username: corn
+    password: corn#9527
+
   redis:
     host: 127.0.0.1
     password:

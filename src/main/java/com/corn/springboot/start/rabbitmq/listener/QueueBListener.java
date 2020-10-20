@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 public class QueueBListener{
 
 
-    @RabbitListener(queues = "myQueueB",containerFactory = "singleListenerContainer")
+//    @RabbitListener(queues = "myQueueB",containerFactory = "singleListenerContainer")
     public void onMessage(Message message, Channel channel) throws Exception {
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
 
@@ -49,7 +49,7 @@ public class QueueBListener{
 //            channel.basicReject(deliveryTag,false);
         } catch (Exception e) {
             //不确认签收,重新入队列
-            channel.basicNack(deliveryTag,false,true);
+            channel.basicNack(deliveryTag,false,false);
             log.error("消息签收失败");
             e.printStackTrace();
         }
