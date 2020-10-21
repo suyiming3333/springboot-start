@@ -2,7 +2,7 @@ spring:
   datasource:
     username: root
     password:
-    url: jdbc:mysql://127.0.0.1:3306/testdb?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://127.0.0.1:39691/testdb?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       # 连接池最大连接数
@@ -27,7 +27,7 @@ spring:
         retry:
           ##开启消费者自动重试
           enabled: true
-          max-attempts: 5
+          max-attempts: 3
         ##自动签收,会尝试n次后，如果还丢失就会抛弃
         acknowledge-mode: manual
     host: 139.9.0.236

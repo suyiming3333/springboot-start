@@ -55,6 +55,7 @@ public class QueueAListener implements ChannelAwareMessageListener {
             channel.basicNack(deliveryTag,false,false);
             log.error("消息签收失败");
             e.printStackTrace();
+            throw new RuntimeException("ex");
         }
     }
 

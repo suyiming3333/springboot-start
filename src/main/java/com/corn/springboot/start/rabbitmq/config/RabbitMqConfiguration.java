@@ -79,7 +79,7 @@ public class RabbitMqConfiguration {
         //参数1：将消息发送到哪一个转发器
         arg.put("x-dead-letter-exchange","my-topic-exchange");
 
-        return new Queue("myQueueA",true,false,false,arg);
+        return new Queue("myQueueA",true);
     }
 
     @Bean
@@ -177,21 +177,22 @@ public class RabbitMqConfiguration {
      * @param myQueueA
      * @return
      */
-    @Bean
-    public SimpleMessageListenerContainer featureMessageListenerContainer(@Qualifier("myQueueA") Queue myQueueA,CachingConnectionFactory connectionFactory){
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-
-        //并发设置
-        container.setConcurrentConsumers(10);
-        container.setMaxConcurrentConsumers(10);
-        container.setPrefetchCount(1);
-        container.setMessagePropertiesConverter(new DefaultMessagePropertiesConverter());
-        container.setQueues(myQueueA);
-        container.setMessageListener(queueAListener);
-        //手动确认机制
-        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
-        return container;
-    }
+//    @Bean
+//    public SimpleMessageListenerContainer featureMessageListenerContainer(@Qualifier("myQueueA") Queue myQueueA,CachingConnectionFactory connectionFactory){
+//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+//        container.setConnectionFactory(connectionFactory);
+//
+//        //并发设置
+//        container.setConcurrentConsumers(10);
+//        container.setMaxConcurrentConsumers(10);
+//        container.setPrefetchCount(1);
+//        container.setMessagePropertiesConverter(new DefaultMessagePropertiesConverter());
+//        container.setQueues(myQueueA);
+//        container.setDeclarationRetries(3);
+//        container.setMessageListener(queueAListener);
+//        //手动确认机制
+//        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+//        return container;
+//    }
 
 }

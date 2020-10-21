@@ -22,7 +22,7 @@ public class MessageSender {
 
     public void send(String msg) throws Exception{
         CorrelationData correlationData = new CorrelationData();
-        correlationData.setId("1");
+//        correlationData.setId("1");
 
         rabbitTemplate.convertAndSend(
                 "my-topic-exchange",//交换机

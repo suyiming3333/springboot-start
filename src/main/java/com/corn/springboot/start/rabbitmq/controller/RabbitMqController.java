@@ -44,7 +44,7 @@ public class RabbitMqController {
     public String testSend2(){
         try {
             User user = new User();
-            user.setId(10086l);
+            user.setId(10086L);
             user.setName("suyiming");
             user.setAge(20);
             user.setEmail("gmail.com");

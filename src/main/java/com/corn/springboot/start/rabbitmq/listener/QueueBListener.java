@@ -3,11 +3,15 @@ package com.corn.springboot.start.rabbitmq.listener;
 
 import cn.hutool.json.JSONUtil;
 import com.corn.springboot.start.mybatisplus.user.entity.User;
+import com.corn.springboot.start.mybatisplus.user.service.UserService;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -23,8 +27,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class QueueBListener{
 
+    @Autowired
+    private UserService userService;
 
-//    @RabbitListener(queues = "myQueueB",containerFactory = "singleListenerContainer")
+
+    @RabbitListener(
+            queues = "myQueueB"
+//            ,containerFactory = "singleListenerContainer"
+    )
     public void onMessage(Message message, Channel channel) throws Exception {
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
 
@@ -37,7 +47,7 @@ public class QueueBListener{
             log.info("收到的消息{}",messageTxt);
             User user = JSONUtil.toBean(messageTxt, User.class);
             System.out.println("user:"+user.getName());
-            
+            userService.save(user);
 
             //手动确认接收
             channel.basicAck(deliveryTag,true);
@@ -47,11 +57,18 @@ public class QueueBListener{
 //            channel.basicNack(deliveryTag,false,false);
             //拒绝签收，丢弃该条信息
 //            channel.basicReject(deliveryTag,false);
-        } catch (Exception e) {
+        }
+        catch (DataIntegrityViolationException e){
+            log.error("数据完整性异常,丢弃消息");
+            channel.basicReject(deliveryTag,false);
+        }
+        catch (Exception e) {
             //不确认签收,重新入队列
             channel.basicNack(deliveryTag,false,false);
             log.error("消息签收失败");
             e.printStackTrace();
+            //必须要抛出异常才会进行重试处理
+            throw new RuntimeException("exception happened,retrying...");
         }
     }
 }
