@@ -22,7 +22,7 @@ public class TestController {
 
 
     @GetMapping(value = "/test")
-    public String test(HttpServletRequest request,User user){
+    public String test(HttpServletRequest request,User user,String uid){
         System.out.println("user:"+user.getId());
         return "ok";
     }

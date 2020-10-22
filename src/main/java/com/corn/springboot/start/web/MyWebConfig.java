@@ -1,5 +1,7 @@
 package com.corn.springboot.start.web;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -26,5 +28,14 @@ public class MyWebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new MyWebUserArgumentResolver());
+    }
+
+
+    @Bean
+    public FilterRegistrationBean myFilterBean(){
+        FilterRegistrationBean bean = new FilterRegistrationBean(new MyFilter());
+        bean.addUrlPatterns("/*");
+        bean.setOrder(1);
+        return bean;
     }
 }
