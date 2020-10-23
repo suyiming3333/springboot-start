@@ -5,7 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 /**
  * @author suyiming3333@gmail.com
@@ -28,9 +31,36 @@ public class TestController {
     }
 
     @GetMapping(value = "/test2")
-    public String test2(HttpServletRequest request){
+    public String test2(HttpServletRequest request) throws IOException {
         String token = request.getHeader("token");
+        String requestBodyString = getRequestBodyString(request);
         System.out.println("user:"+token);
         return "ok";
+    }
+
+
+    public String getRequestBodyString(HttpServletRequest request){
+        StringBuffer sb = new StringBuffer();
+        BufferedReader bufferedReader = null;
+
+        try{
+            bufferedReader =  request.getReader() ;
+            char[] charBuffer = new char[128];
+            int bytesRead;
+            while((bytesRead = bufferedReader.read(charBuffer))!=-1){
+                sb.append(charBuffer, 0, bytesRead);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            if(bufferedReader != null){
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return sb.toString();
     }
 }
