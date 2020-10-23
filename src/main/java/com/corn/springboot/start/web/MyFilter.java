@@ -28,7 +28,10 @@ public class MyFilter implements Filter {
 //        String requestBodyString = new TestController().getRequestBodyString((HttpServletRequest) servletRequest);
         CacheRequestBodyRequestWrapper bodyRequestWrapper = new CacheRequestBodyRequestWrapper((HttpServletRequest) servletRequest);
         CacheResponseBodyResponseWrapper responseBodyWrapper = new CacheResponseBodyResponseWrapper((HttpServletResponse) servletResponse);
+        System.out.println("before filter 1");
         filterChain.doFilter( bodyRequestWrapper, responseBodyWrapper);
+        System.out.println("after filter 1");
+
         String requestBodyString = new TestController().getRequestBodyString(bodyRequestWrapper);
 
         String responseString = responseBodyWrapper.getTextContent();

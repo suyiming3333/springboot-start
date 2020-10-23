@@ -31,11 +31,23 @@ public class MyWebConfig implements WebMvcConfigurer {
     }
 
 
+    /**
+     * 过滤顺序为小到大
+     * @return
+     */
     @Bean
     public FilterRegistrationBean myFilterBean(){
         FilterRegistrationBean bean = new FilterRegistrationBean(new MyFilter());
         bean.addUrlPatterns("/*");
-        bean.setOrder(1);
+        bean.setOrder(Integer.MAX_VALUE);
+        return bean;
+    }
+
+    @Bean
+    public FilterRegistrationBean myFilterBeanb(){
+        FilterRegistrationBean bean = new FilterRegistrationBean(new MyFilter2());
+        bean.addUrlPatterns("/*");
+        bean.setOrder(Integer.MAX_VALUE-1);
         return bean;
     }
 }
