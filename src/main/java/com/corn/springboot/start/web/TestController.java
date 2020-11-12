@@ -32,6 +32,7 @@ public class TestController {
 
     @GetMapping(value = "/test2")
     public String test2(HttpServletRequest request) throws IOException {
+        String userId = request.getParameter("userId");
         String token = request.getHeader("token");
         String requestBodyString = getRequestBodyString(request);
         System.out.println("user:"+token);

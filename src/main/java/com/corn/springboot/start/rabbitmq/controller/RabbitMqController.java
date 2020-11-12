@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author suyiming3333@gmail.com
  * @version V1.0
@@ -41,7 +43,7 @@ public class RabbitMqController {
     }
 
     @GetMapping("/test2")
-    public String testSend2(){
+    public String testSend2(HttpServletRequest request){
         try {
             User user = new User();
             user.setId(10086L);

@@ -1,4 +1,4 @@
-package com.corn.springboot.start.spring;
+package com.corn.springboot.start.spring.factorybean;
 
 import org.springframework.beans.factory.FactoryBean;
 

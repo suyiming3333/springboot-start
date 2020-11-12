@@ -24,12 +24,14 @@ public class MessageSender {
         CorrelationData correlationData = new CorrelationData();
 //        correlationData.setId("1");
 
-        rabbitTemplate.convertAndSend(
-                "my-topic-exchange",//交换机
-                "my.x",//路由键
-                msg,//消息内容
-                correlationData//消息唯一ID
-        );
+        rabbitTemplate.convertAndSend("DEVICE_STATUS_QUEUE",msg);
+
+//        rabbitTemplate.convertAndSend(
+//                "my-topic-exchange",//交换机
+//                "my.x",//路由键
+//                msg,//消息内容
+//                correlationData//消息唯一ID
+//        );
 
     }
 }

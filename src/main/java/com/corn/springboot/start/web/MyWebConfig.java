@@ -19,7 +19,7 @@ import java.util.List;
  * @date 2020/10/22 15:40
  */
 
-@Configuration
+//@Configuration
 public class MyWebConfig implements WebMvcConfigurer {
     /***
      * 添加自定义参数处理器
@@ -35,19 +35,19 @@ public class MyWebConfig implements WebMvcConfigurer {
      * 过滤顺序为小到大
      * @return
      */
-    @Bean
-    public FilterRegistrationBean myFilterBean(){
-        FilterRegistrationBean bean = new FilterRegistrationBean(new MyFilter());
-        bean.addUrlPatterns("/*");
-        bean.setOrder(Integer.MAX_VALUE);
-        return bean;
-    }
-
-    @Bean
-    public FilterRegistrationBean myFilterBeanb(){
-        FilterRegistrationBean bean = new FilterRegistrationBean(new MyFilter2());
-        bean.addUrlPatterns("/*");
-        bean.setOrder(Integer.MAX_VALUE-1);
-        return bean;
-    }
+//    @Bean
+//    public FilterRegistrationBean myFilterBean(){
+//        FilterRegistrationBean bean = new FilterRegistrationBean(new MyFilter());
+//        bean.addUrlPatterns("/*");
+//        bean.setOrder(Integer.MAX_VALUE);
+//        return bean;
+//    }
+//
+//    @Bean
+//    public FilterRegistrationBean myFilterBeanb(){
+//        FilterRegistrationBean bean = new FilterRegistrationBean(new MyFilter2());
+//        bean.addUrlPatterns("/*");
+//        bean.setOrder(Integer.MAX_VALUE-1);
+//        return bean;
+//    }
 }

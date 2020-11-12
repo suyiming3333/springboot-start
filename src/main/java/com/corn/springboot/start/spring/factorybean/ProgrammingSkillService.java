@@ -1,4 +1,4 @@
-package com.corn.springboot.start.spring;
+package com.corn.springboot.start.spring.factorybean;
 
 /**
  * @author suyiming3333@gmail.com

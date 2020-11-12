@@ -1,5 +1,6 @@
-package com.corn.springboot.start.spring;
+package com.corn.springboot.start.spring.factorybean;
 
+import com.corn.springboot.start.spring.factorybean.ProgrammerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,6 +16,10 @@ import org.springframework.context.annotation.Configuration;
 public class SpringConfig {
 
 
+    /****
+     * 通过factorybean 构建bean实例
+     * @return
+     */
     @Bean
     public ProgrammerFactoryBean aProgrammer(){
         ProgrammerFactoryBean programmerFactoryBean = new ProgrammerFactoryBean();

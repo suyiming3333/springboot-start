@@ -32,7 +32,7 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocke
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
         webSocketHandlerRegistry
-                .addHandler(myClusterWebSocketHandler, "/testWebSocket")//添加接收请求的handler
+                .addHandler(myWebSocketHandler, "/testWebSocket")//添加接收请求的handler
                 .addInterceptors(new MyHasdShakeInterceptor())//添加拦截器(用于处理参数)
                 .setAllowedOrigins("http://www.websocket-test.com");//设置origins源
 

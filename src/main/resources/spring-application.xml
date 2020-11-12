@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" default-autowire="byName">
+
+
+
+    <bean id="lesson1" class="com.corn.springboot.start.spring.beanlifecircle.entity.LessonModel"/>
+
+    <bean id="lesson2" parent="lesson1">
+        <property name="name" value="spring高手系列"/>
+        <property name="lessonCount" value="100"/>
+    </bean>
+
+    <bean id="lesson3" parent="lesson2">
+        <property name="description" value="路人甲Java带你学spring，超越90%开发者!"/>
+    </bean>
+
+</beans>
