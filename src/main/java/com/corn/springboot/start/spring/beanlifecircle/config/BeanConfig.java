@@ -15,6 +15,6 @@ public class BeanConfig {
 
     @Bean()
     public Car car(){
-        return new Car();
+        return new Car("as");
     }
 }

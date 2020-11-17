@@ -1,5 +1,7 @@
 package com.corn.springboot.start.spring.beanlifecircle.entity;
 
+import com.corn.springboot.start.spring.beanlifecircle.annotation.MyAutowried;
+
 /**
  * @author suyiming3333@gmail.com
  * @version V1.0
@@ -26,6 +28,27 @@ public class User {
     }
 
     public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public User() {
+        System.out.println("no constructor");
+    }
+
+    public User(String name) {
+        this.name = name;
+        System.out.println("name constructor");
+    }
+
+    @MyAutowried
+    public User(String name, Car car) {
+        this.name = name;
+        this.car = car;
+    }
+
+    public User(Car car) {
+        System.out.println("all param constructor");
+
         this.car = car;
     }
 
