@@ -1,5 +1,8 @@
 package com.corn.springboot.start.spring.beanlifecircle;
 
+import com.corn.springboot.start.spring.beanlifecircle.annotation.MyAutowried;
+import com.corn.springboot.start.spring.beanlifecircle.component.MySmartInitializingSingleton;
+import com.corn.springboot.start.spring.beanlifecircle.entity.AwareBean;
 import com.corn.springboot.start.spring.beanlifecircle.entity.Car;
 import com.corn.springboot.start.spring.beanlifecircle.entity.User;
 import com.corn.springboot.start.spring.beanlifecircle.service.ServiceOne;
@@ -8,10 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.MutablePropertyValues;
+import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
+import org.springframework.beans.factory.config.*;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -20,10 +23,14 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotatedBeanDefinitionReader;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.lang.Nullable;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.lang.reflect.Constructor;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author suyiming3333@gmail.com
@@ -209,6 +216,7 @@ public class TestBeanLifeCircle {
                 if (beanClass == Car.class) {
                     Car car = new Car();
                     car.setName("保时捷");
+                    //直接return 不往下走bean实例化的步骤
                     return car;
                 }
                 return null;
@@ -225,4 +233,240 @@ public class TestBeanLifeCircle {
         //从容器中获取car这个bean的实例，输出
         System.out.println(factory.getBean("car"));
     }
+
+    /**
+     * 2、bean实例化
+     *  通过SmartInstantiationAwareBeanPostProcessor##determineCandidateConstructors
+     *  采用指定构造方法实例化bean
+     */
+
+    @Test
+    public void testSmartInstantiationAwareBeanPostProcessor(){
+        DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+
+        //添加自定义SmartInstantiationAwareBeanPostProcessor
+        factory.addBeanPostProcessor(new SmartInstantiationAwareBeanPostProcessor(){
+            @Nullable
+            @Override
+            public Constructor<?>[] determineCandidateConstructors(Class<?> beanClass, String beanName) throws BeansException {
+                System.out.println(beanClass);
+                System.out.println("调用 MySmartInstantiationAwareBeanPostProcessor.determineCandidateConstructors 方法");
+                Constructor<?>[] declaredConstructors = beanClass.getDeclaredConstructors();
+                if (declaredConstructors != null) {
+                    //获取有@MyAutowried注解的构造器列表
+                    List<Constructor<?>> collect = Arrays.stream(declaredConstructors).
+                            filter(constructor -> constructor.isAnnotationPresent(MyAutowried.class)).
+                            collect(Collectors.toList());
+                    //使用被MyAutowried注解的构造器
+                    Constructor[] constructors = collect.toArray(new Constructor[collect.size()]);
+                    return constructors.length != 0 ? constructors : null;
+                } else {
+                    return null;
+                }
+            }
+        });
+
+        BeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(User.class).getBeanDefinition();
+
+        ConstructorArgumentValues constructorArgumentValues = beanDefinition.getConstructorArgumentValues();
+        constructorArgumentValues.addGenericArgumentValue("su");
+        constructorArgumentValues.addGenericArgumentValue(new Car("bmw"));
+
+        factory.registerBeanDefinition("user",beanDefinition);
+
+//        factory.registerBeanDefinition("user",
+//                BeanDefinitionBuilder.
+//                        genericBeanDefinition(User.class).
+//                        addConstructorArgValue(new Car("bmw")).
+//                        getBeanDefinition());
+
+        User user = factory.getBean("user", User.class);
+        System.out.println(user);
+
+    }
+
+
+    /**
+     * 7、MergeBeanDefinition 处理
+     * 调用AbstractAutowireCapableBeanFactory##applyMergedBeanDefinitionPostProcessors
+     * 遍历所有的MergedBeanDefinitionPostProcessor
+     *
+     * spring实现类
+     * AutowiredAnnotationBeanPostProcessor##postProcessMergedBeanDefinition
+     *
+     *  @Override
+     * 	public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
+     * 	    //缓存方法 字段
+     * 		InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);
+     * 		metadata.checkConfigMembers(beanDefinition);
+     * 	}
+     *
+     */
+
+
+    /**
+     * 8、bean属性设置阶段：调用AbstractAutowireCapableBeanFactory##populateBean 填充属性
+     *  - 实例化后：postProcessAfterInstantiation
+     *  - 属性赋值前：postProcessProperties
+     *  - bean get set 赋值
+     */
+
+    @Test
+    public void afterInitilized(){
+        DefaultListableBeanFactory defaultListableBeanFactory = new DefaultListableBeanFactory();
+        defaultListableBeanFactory.addBeanPostProcessor(new InstantiationAwareBeanPostProcessor(){
+            /**
+             * 返回false 跳过属性设置
+             * @param bean
+             * @param beanName
+             * @return
+             * @throws BeansException
+             */
+            @Override
+            public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+                if ("car".equals(beanName)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+        });
+
+        //定义一个car bean,车名为：奥迪
+        AbstractBeanDefinition carBeanDefinition = BeanDefinitionBuilder.
+                genericBeanDefinition(Car.class).
+                addPropertyValue("name", "奥迪").  //@2
+                getBeanDefinition();
+        defaultListableBeanFactory.registerBeanDefinition("car", carBeanDefinition);
+        //从容器中获取car这个bean的实例，输出
+        System.out.println(defaultListableBeanFactory.getBean("car"));
+
+    }
+
+    @Test
+    public void postProcessProperties(){
+        DefaultListableBeanFactory defaultListableBeanFactory = new DefaultListableBeanFactory();
+        defaultListableBeanFactory.addBeanPostProcessor(new InstantiationAwareBeanPostProcessor(){
+            /**
+             * 修改properties
+             * @param pvs
+             * @param bean
+             * @param beanName
+             * @return
+             * @throws BeansException
+             */
+            @Nullable
+            @Override
+            public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+                if ("car".equals(beanName)) {
+                    if (pvs == null) {
+                        pvs = new MutablePropertyValues();
+                    }
+                    if (pvs instanceof MutablePropertyValues) {
+                        MutablePropertyValues mpvs = (MutablePropertyValues) pvs;
+                        //将姓名设置为：路人
+                        mpvs.add("name", "edited carname");
+                    }
+                }
+                return null;
+            }
+        });
+
+        //定义一个car bean,车名为：奥迪
+        AbstractBeanDefinition carBeanDefinition = BeanDefinitionBuilder.
+                genericBeanDefinition(Car.class).
+                addPropertyValue("name", "奥迪").  //@2
+                getBeanDefinition();
+        defaultListableBeanFactory.registerBeanDefinition("car", carBeanDefinition);
+        //从容器中获取car这个bean的实例，输出
+        System.out.println(defaultListableBeanFactory.getBean("car"));
+
+    }
+
+    /**
+     * 9、bean初始化阶段
+     * 调用AbstractAutowireCapableBeanFactory#initializeBean
+     * - Bean Aware回调。其中，分别注入BeanName、BeanClassLoader、BeanFactory
+     * 	private void invokeAwareMethods(String beanName, Object bean) {
+     * 		if (bean instanceof Aware) {
+     * 			if (bean instanceof BeanNameAware) {
+     * 				((BeanNameAware) bean).setBeanName(beanName);
+     *                        }
+     * 			if (bean instanceof BeanClassLoaderAware) {
+     * 				ClassLoader bcl = getBeanClassLoader();
+     * 				if (bcl != null) {
+     * 					((BeanClassLoaderAware) bean).setBeanClassLoader(bcl);
+     *                }
+     *            }
+     * 			if (bean instanceof BeanFactoryAware) {
+     * 				((BeanFactoryAware) bean).setBeanFactory(AbstractAutowireCapableBeanFactory.this);
+     *            }* 		}
+     *    }
+     */
+
+    @Test
+    public void testBeanAware(){
+        DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+        factory.registerBeanDefinition("awareBean", BeanDefinitionBuilder.genericBeanDefinition(AwareBean.class).getBeanDefinition());
+        //调用getBean方法获取bean，将触发bean的初始化
+        factory.getBean("awareBean");
+    }
+
+    /**
+     * - Bean初始化前：调用AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization
+     * 会调用BeanPostProcessor的postProcessBeforeInitialization方法
+     *
+     * BeanPostProcessor 重要实现类：ApplicationContextAwareProcessor
+     *
+     *
+     */
+
+    @Test
+    public void testBeanAwareBeforeInitialization() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.register(AwareBean.class);
+        context.refresh();
+    }
+
+    /**
+     * - bean初始化
+     * 调用InitializingBean接口的afterPropertiesSet方法
+     * 调用定义bean的时候指定的初始化方法。
+     *
+     */
+
+    /**
+     * bean初始化后
+     * 调用AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization
+     * 会调用BeanPostProcessor的postProcessAfterInitialization方法
+     */
+
+    /**
+     * 所有单例bean初始化完成后阶段
+     */
+    @Test
+    public void SmartInitializingSingletonTest(){
+//        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+////        context.register(SmartInitializingSingletonTest.class);
+//        System.out.println("开始启动容器!");
+//        context.refresh();
+//        System.out.println("容器启动完毕!");
+
+        DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+        factory.registerBeanDefinition("abean", BeanDefinitionBuilder.genericBeanDefinition(AwareBean.class).getBeanDefinition());
+        factory.registerBeanDefinition("mySmartInitializingSingleton", BeanDefinitionBuilder.genericBeanDefinition(MySmartInitializingSingleton.class).getBeanDefinition());
+        System.out.println("准备触发所有单例bean初始化");
+        //触发所有bean初始化，并且回调 SmartInitializingSingleton#afterSingletonsInstantiated 方法
+        factory.preInstantiateSingletons();
+    }
+
+    /**
+     * bean的使用：getBean
+     */
+
+    /**
+     * bean销毁:
+     * 会调用DestructionAwareBeanPostProcessor#postProcessBeforeDestruction
+     */
 }

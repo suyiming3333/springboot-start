@@ -9,6 +9,13 @@ package com.corn.springboot.start.spring.beanlifecircle.entity;
  * @date 2020/11/6 17:34
  */
 public class Car {
+    public Car() {
+    }
+
+    public Car(String name) {
+        this.name = name;
+    }
+
     private String name;
 
     public String getName() {
