@@ -51,10 +51,11 @@ public class QueueAListener implements ChannelAwareMessageListener {
             //拒绝签收，丢弃该条信息
 //            channel.basicReject(deliveryTag,false);
         } catch (Exception e) {
-            //不确认签收,重新入队列
+            //不确认签收,不重新入队列
             channel.basicNack(deliveryTag,false,false);
             log.error("消息签收失败");
             e.printStackTrace();
+            //手动抛异常触发重试
             throw new RuntimeException("ex");
         }
     }

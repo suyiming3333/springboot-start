@@ -42,3 +42,7 @@ spring:
 
 server:
   port: 13000
+
+me:
+  name: su
+  age: 18
