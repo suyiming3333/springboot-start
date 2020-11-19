@@ -36,6 +36,7 @@ class Counter implements Runnable{
         try {
             Thread.sleep((int) (Math.random() * 1000));
             if(index == 3){
+                Thread.sleep(500);
                 int o = index/0;
             }else{
 //                Thread.sleep(1000);
@@ -45,6 +46,7 @@ class Counter implements Runnable{
             System.out.println("线程被中断了："+Thread.currentThread().isInterrupted());
             e.printStackTrace();
         } catch (ArithmeticException e){
+            System.out.println("子任务遇到异常，取消所有正在自行的所有任务");
             executorService.shutdownNow();
             System.out.println(1);
         }
