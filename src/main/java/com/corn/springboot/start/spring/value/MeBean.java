@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 public class MeBean {
 
     public MeBean(){
-        System.out.println("1");
     }
 
     @Value("${name}")
