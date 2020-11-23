@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @date 2020/11/18 16:26
  */
 
-@Component
+//@Component
 public class MyService4 {
 
     public void method(){

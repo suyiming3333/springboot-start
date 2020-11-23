@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @date 2020/11/18 15:43
  */
 
-@Component
+//@Component
 public class MyService2 {
 
     @Autowired

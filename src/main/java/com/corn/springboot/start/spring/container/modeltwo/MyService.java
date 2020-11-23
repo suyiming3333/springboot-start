@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @Description: TODO
  * @date 2020/11/18 15:49
  */
-@Component
+//@Component
 public class MyService {
 
     public void method(){
