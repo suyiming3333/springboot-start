@@ -4,6 +4,7 @@ import com.corn.springboot.start.websocket.common.MyClusterWebSocketHandler;
 import com.corn.springboot.start.websocket.common.MyWebSocketHandler;
 import com.corn.springboot.start.websocket.dto.MessageDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,5 +47,16 @@ public class SendMsgController {
             e.printStackTrace();
         }
 
+    }
+
+    @GetMapping("/getTotal")
+    public String getTotal(){
+        int count = MyWebSocketHandler.getOnlineCount();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "total:"+count;
     }
 }

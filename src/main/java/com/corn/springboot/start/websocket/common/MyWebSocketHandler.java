@@ -59,7 +59,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
         }
         sessionsMap.remove(webSocketSession.getAttributes().get("userId").toString());
         sessions.remove(webSocketSession);
-        subOnlineCount();
+//        subOnlineCount();
     }
 
     @Override

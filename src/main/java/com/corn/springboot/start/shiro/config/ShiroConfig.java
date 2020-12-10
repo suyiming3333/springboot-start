@@ -23,7 +23,7 @@ import java.util.Map;
  * @date 2020/11/23 13:11
  */
 
-@Configuration
+//@Configuration
 public class ShiroConfig {
 
 
