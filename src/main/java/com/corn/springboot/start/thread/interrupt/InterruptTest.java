@@ -3,6 +3,7 @@ package com.corn.springboot.start.thread.interrupt;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class InterruptTest {
 
@@ -30,9 +31,13 @@ public class InterruptTest {
                         Thread.sleep(1000);
                         System.out.println(LocalDateTime.now());
                     } catch (InterruptedException e) {
+                        System.out.println("中断标志：" + Thread.interrupted());
                         System.out.println("中断标志：" + Thread.currentThread().isInterrupted());
                         //响应中断后，isInterrupted标志会重置，需要再一次设置中断标志位
                         Thread.currentThread().interrupt();
+                        //Thread.interrupted() 查看终端标志状态，然后重置终端状态为false
+//                        System.out.println("中断标志：" + Thread.interrupted());
+//                        System.out.println("中断标志：" + Thread.currentThread().isInterrupted());
                         e.printStackTrace();
                     }
 
@@ -49,5 +54,7 @@ public class InterruptTest {
         t2.start();
         Thread.sleep(4000);
         t2.interrupt();
+
+        ConcurrentHashMap concurrentHashMap = new ConcurrentHashMap();
     }
 }
