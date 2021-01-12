@@ -15,4 +15,8 @@
         id, name, age, email
     </sql>
 
+    <select id="selectUser" resultMap="BaseResultMap">
+    select * from user where id = #{id}
+  </select>
+
 </mapper>

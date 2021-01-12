@@ -2,6 +2,7 @@ package com.corn.springboot.start.mybatisplus.user.mapper;
 
 import com.corn.springboot.start.mybatisplus.user.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -12,5 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2020-10-11
  */
 public interface UserMapper extends BaseMapper<User> {
+
+    User selectUser(@Param("id") String id);
 
 }
