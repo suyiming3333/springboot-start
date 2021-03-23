@@ -4,21 +4,19 @@ import com.alibaba.csp.sentinel.init.InitExecutor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
-
-@MapperScan("com.corn.springboot.start.mybatisplus.*.mapper")
 @SpringBootApplication
+@EnableWebSecurity
 public class StartApplication {
 
     public static void main(String[] args) {
         /**
-         * -Dcsp.sentinel.dashboard.server=localhost:10880 鍚姩鍙傛暟sentinel
+         * -Dcsp.sentinel.dashboard.server=localhost:10880 启动参数sentinel
          */
         SpringApplication.run(StartApplication.class, args);
 
 //        ConfigurableApplicationContext context = SpringApplication.run(StartApplication.class, args);
 //
-//        // 杩炴帴鍒版帶鍒跺彴锛屼笌sentinel鎺у埗鍙伴�氫俊
+//        // 连接到控制台，与sentinel控制台通信
 //        System.setProperty("project.name",
 //                context.getEnvironment().getProperty("spring.application.name","sentinel"));
 //        System.setProperty("csp.sentinel.dashboard.server",
