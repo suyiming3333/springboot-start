@@ -16,7 +16,11 @@
     </sql>
 
     <select id="selectUser" resultMap="BaseResultMap">
-    select * from user where id = #{id}
-  </select>
+        select * from user where id = #{id}
+    </select>
+
+    <insert id="insertUser">
+        insert into user(id,name,age,email)values(#{id},#{name},#{age},#{email})
+    </insert>
 
 </mapper>
