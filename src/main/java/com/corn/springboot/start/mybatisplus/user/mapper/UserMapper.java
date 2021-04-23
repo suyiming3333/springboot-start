@@ -4,6 +4,8 @@ import com.corn.springboot.start.mybatisplus.user.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -15,5 +17,7 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper extends BaseMapper<User> {
 
     User selectUser(@Param("id") String id);
+
+    List<User> getByPage();
 
 }
