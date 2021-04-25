@@ -30,4 +30,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         List<User> list = userMapper.getByPage();
         return list;
     }
+
+    @Override
+    public User getUserByName(String userName) {
+        return userMapper.getUserByName(userName);
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return userMapper.selectUser(id);
+    }
+
+    @Override
+    public void delUserById(Long userId) {
+        userMapper.deleteById(userId);
+    }
 }

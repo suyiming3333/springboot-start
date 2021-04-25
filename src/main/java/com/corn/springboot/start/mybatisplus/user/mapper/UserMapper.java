@@ -18,6 +18,11 @@ public interface UserMapper extends BaseMapper<User> {
 
     User selectUser(@Param("id") String id);
 
+    User selectUser(@Param("id") Long id);
+
+
+    User getUserByName(@Param("userName") String userName);
+
     List<User> getByPage();
 
 }

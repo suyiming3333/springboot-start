@@ -19,6 +19,10 @@
     select * from user where id = #{id}
   </select>
 
+    <select id="getUserByName" resultMap="BaseResultMap">
+    select * from user where name = #{userName}
+  </select>
+
     <select id="getByPage" resultMap="BaseResultMap">
         select * from user
     </select>

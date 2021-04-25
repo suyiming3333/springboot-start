@@ -17,4 +17,10 @@ public interface UserService extends IService<User> {
 
     List<User> getByPage(Integer pageNo);
 
+    User getUserByName(String userName);
+
+    User getUserById(Long id);
+
+    void delUserById(Long userId);
+
 }
