@@ -24,7 +24,16 @@
   </select>
 
     <select id="getByPage" resultMap="BaseResultMap">
-        select * from user
+        select * from user order by age desc
     </select>
+
+    <select id="getListByAge" resultMap="BaseResultMap">
+        select * from user t where t.age = #{age}
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap">
+        select * from user t where t.id = #{id}
+    </select>
+
 
 </mapper>

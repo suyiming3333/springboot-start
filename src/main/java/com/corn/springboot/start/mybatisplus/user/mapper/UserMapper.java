@@ -25,4 +25,8 @@ public interface UserMapper extends BaseMapper<User> {
 
     List<User> getByPage();
 
+    List<User> getListByAge(@Param("age")Integer age);
+
+    List<User> getById(@Param("id")String id);
+
 }

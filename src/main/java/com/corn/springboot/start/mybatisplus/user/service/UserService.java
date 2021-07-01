@@ -23,4 +23,8 @@ public interface UserService extends IService<User> {
 
     void delUserById(Long userId);
 
+    List<User> getListByAge(Integer age);
+
+    List<User> getById(String id);
+
 }
